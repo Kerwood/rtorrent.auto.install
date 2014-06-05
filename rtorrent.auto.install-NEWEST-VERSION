@@ -103,15 +103,15 @@ if [ ! -h /etc/apache2/mods-enabled/scgi.load ]; then
         ln -s /etc/apache2/mods-available/scgi.load /etc/apache2/mods-enabled/scgi.load
 fi
 
-wget http://dl.bintray.com/novik65/generic/rutorrent-3.6.tar.gz
-tar -zxvf rutorrent-3.6.tar.gz
 
 if [ -d /var/www/rutorrent ]; then
 	rm -r /var/www/rutorrent
 fi
 
+#get rutorrent from source
+svn checkout http://rutorrent.googlecode.com/svn/trunk/ rutorrent
+
 mv -f rutorrent /var/www/
-rm -v rutorrent-3.6.tar.gz
 
 plugindir="/var/www/rutorrent/plugins/"
 
