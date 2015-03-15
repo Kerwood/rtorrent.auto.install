@@ -713,7 +713,7 @@ cat > /etc/apache2/sites-available/rutorrent << EOF
 
 	SCGIMount /RPC2 127.0.0.1:5000
 
-	<location /RPC2>
+	<location /rutorrent>
 		AuthName "Tits or GTFO"
 		AuthType Basic
 		Require Valid-User
