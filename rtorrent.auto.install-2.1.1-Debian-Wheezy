@@ -353,6 +353,10 @@ case $plugin in
 	desc="http://code.google.com/p/rutorrent/wiki/PluginGeoIP"
 	unpack="tar -zxvf $file -C $plugindir"
 	fu_download
+	wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+	gunzip GeoLiteCity.dat.gz
+	mkdir -v /usr/share/GeoIP
+	mv -v GeoLiteCity.dat /usr/share/GeoIP/GeoIPCity.dat
 	apt-get install php5-geoip
 	;;
 
