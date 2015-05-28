@@ -60,9 +60,11 @@ function APACHE-UTILS {
 		read -p " Do you want to install it? [y/n]: " -n 1
 		if [[ $REPLY =~ [Yy]$ ]]; then
 			echo
-			apt-get -y install apache2-utils
+			apt-get -y install apache2-utils zip git subversion
 			clear
 		else
+			echo
+			apt-get -y install zip git subversion
 			clear
 			exit
 		fi
