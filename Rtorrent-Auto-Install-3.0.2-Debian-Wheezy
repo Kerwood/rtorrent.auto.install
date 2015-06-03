@@ -241,6 +241,7 @@ function SELECT_PLUGINS {
 		echo "45 - Noty v3.6"
 		echo "46 - Task v3.6"
 		echo "47 - All Plugins v3.6. More at https://github.com/Novik/ruTorrent/wiki/Plugins"
+		echo "48 - Install all plugins"
 		echo
 		echo "0 - Exit plugin installation"
 		echo
@@ -519,6 +520,7 @@ function SELECT_PLUGINS {
 			;;
 
 			29)
+			#Remember to update option 48 "All plugins"
 			name="NFO Plugin"
 			url="http://srious.biz/nfo.tar.gz"
 			file="nfo.tar.gz"
@@ -528,6 +530,7 @@ function SELECT_PLUGINS {
 			;;
 
 			30)
+			#Remember to update option 48 "All plugins"
 			name="Chat Plugin v2.0"
 			url="http://rutorrent-chat.googlecode.com/files/chat-2.0.tar.gz"
 			file="chat-2.0.tar.gz"
@@ -537,6 +540,7 @@ function SELECT_PLUGINS {
 			;;
 
 			31)
+			#Remember to update option 48 "All plugins"
 			name="Logoff Plugin v1.3"
 			url="http://rutorrent-logoff.googlecode.com/files/logoff-1.3.tar.gz"
 			file="logoff-1.3.tar.gz"
@@ -546,6 +550,7 @@ function SELECT_PLUGINS {
 			;;
 
 			32)
+			#Remember to update option 48 "All plugins"
 			name="Pause Plugin v1.2"
 			url="http://rutorrent-pausewebui.googlecode.com/files/pausewebui.1.2.zip"
 			file="pausewebui.1.2.zip"
@@ -555,6 +560,7 @@ function SELECT_PLUGINS {
 			;;
 
 			33)
+			#Remember to update option 48 "All plugins"
 			name="Instant Search Plugin v1.0"
 			url="http://rutorrent-instantsearch.googlecode.com/files/instantsearch.1.0.zip"
 			file="instantsearch.1.0.zip"
@@ -691,6 +697,7 @@ function SELECT_PLUGINS {
 			;;
 
 			47)
+			#Remember to update option 48 "All plugins"
 			name="Plugins v3.6"
 			url="http://dl.bintray.com/novik65/generic/plugins-3.6.tar.gz"
 			file="plugins-3.6.tar.gz"
@@ -701,7 +708,63 @@ function SELECT_PLUGINS {
 				apt-get -y install php5-geoip ffmpeg curl libzen0 libmediainfo0 mediainfo unrar-free
 			fi
 			;;
+			
+			48)
+			#Note : the $unpacks are not necessery, it is only here to indicate where to put the $file in the custom DOWNLOAD_FUNCTION
+			name="All Plugins"
+			desc="This installs all plugins, those included in Plugins v3.6 and those that were not."
+			#Plugins
+			url1="http://dl.bintray.com/novik65/generic/plugins-3.6.tar.gz"
+			file1="plugins-3.6.tar.gz"
+			#unpack="tar -zxvf $file -C /tmp/"
+			#NFO Plugin
+			url2="http://srious.biz/nfo.tar.gz"
+			file2="nfo.tar.gz"
+			#unpack="tar -zxvf $file2 -C $TEMP_PLUGIN_DIR"
+			#Chat Plugin
+			url3="http://rutorrent-chat.googlecode.com/files/chat-2.0.tar.gz"
+			file3="chat-2.0.tar.gz"
+			#unpack="tar -zxvf $file3 -C $TEMP_PLUGIN_DIR"
+			#Logoff Plugin
+			url4="http://rutorrent-logoff.googlecode.com/files/logoff-1.3.tar.gz"
+			file4="logoff-1.3.tar.gz"
+			#unpack="tar -zxvf $file4 -C $TEMP_PLUGIN_DIR"
+			#Pause Plugin
+			url5="http://rutorrent-pausewebui.googlecode.com/files/pausewebui.1.2.zip"
+			file5="pausewebui.1.2.zip"
+			#unpack="unzip $file5 -d $TEMP_PLUGIN_DIR"
+			#Search Plugin
+			url6="http://rutorrent-instantsearch.googlecode.com/files/instantsearch.1.0.zip"
+			file6="instantsearch.1.0.zip"
+			#unpack="unzip $file6 -d $TEMP_PLUGIN_DIR"
+			
+			# This is a custom function of DOWNLOAD_PLUGIN. Putting it here make it more easy to update and maintain it than at the top.
+			echo
+			echo -e "$desc"
+			echo
+			read -p "Download '$name'. [y/n]: " -n 1
 
+			if [[ $REPLY =~ [Yy]$ ]]; then
+				echo
+				wget $url1 $url2 $url3 $url4 $url5 $url6
+				tar -zxvf $file1 -C /tmp/
+				tar -zxvf $file2 $file3 $file4 -C $TEMP_PLUGIN_DIR
+				unzip $file5 $file6 -d $TEMP_PLUGIN_DIR
+				
+				if [ $? -eq "0" ]; then
+					rm $file1 $file2 $file3 $file4 $file5 $file6
+					echo
+					PLUGIN_ARRAY+=("${name}")
+					error1="${GREEN}'$name' downloaded, unpacked and moved to temporary plugins folder${NORMAL}"					else
+					echo
+					error1="${RED}Something went wrong.. Error!${NORMAL}"
+				fi
+			fi
+			echo
+			mv /tmp/plugins/* $TEMP_PLUGIN_DIR
+			apt-get -y install php5-geoip ffmpeg curl libzen0 libmediainfo0 mediainfo unrar-free
+			;;
+			
 			0)
 			break
 			;;
