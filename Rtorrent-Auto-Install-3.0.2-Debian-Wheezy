@@ -38,28 +38,16 @@ function CHECK_ROOT {
 	fi
 }
 
-# Checks is apache2-utils and unzip is installed. Its is needed to make the Web user
-function APACHE-UTILS {
-	count=0
+# Checks for apache2-utils and unzip if it's installed. It's is needed to make the Web user
+function APACHE_UTILS {
+	AP_UT_CHECK="$(dpkg-query -W -f='${Status}' apache2-utils 2>/dev/null | grep -c "ok installed")"
+	UNZIP_CHECK="$(dpkg-query -W -f='${Status}' unzip 2>/dev/null | grep -c "ok installed")"
 
-	dpkg -s apache2-utils 2> /dev/null | grep "Status: install ok installed" &> /dev/null
-	if [ $? != 0 ]; then
-	  let "count++"
-	fi
-
-	dpkg -s unzip 2> /dev/null | grep "Status: install ok installed" &> /dev/null
-	if [ $? != 0 ]; then
-	  let "count++"
-	fi
-
-	if [ $count != 0 ]; then
-		echo
+	if [ "$AP_UT_CHECK" -ne 1 ] || [ "$UNZIP_CHECK" -ne 1 ]; then
 		echo " One or both of the packages apache2-utils and unzip is not installed and is needed for the setup."
-		read -p " Do you want to install it? [y/n]: " -n 1
+		read -p " Do you want to install it? [y/n] " -n 1
 		if [[ $REPLY =~ [Yy]$ ]]; then
-			echo
-			apt-get -y install apache2-utils unzip
-			clear
+			debconf-apt-progress -- apt-get -y install apache2-utils unzip
 		else
 			clear
 			exit
@@ -714,41 +702,49 @@ function SELECT_PLUGINS {
 # Function for installing dependencies
 function APT-DEPENDENCIES {
 	apt-get update
-	apt-get -y install openssl git subversion apache2 apache2-utils build-essential libsigc++-2.0-dev libcurl4-openssl-dev automake libtool libcppunit-dev libncurses5-dev libapache2-mod-scgi php5 php5-curl php5-cli libapache2-mod-php5 screen unzip libssl-dev
+	apt-get -y install openssl git apache2 apache2-utils build-essential libsigc++-2.0-dev libcurl4-openssl-dev automake libtool libcppunit-dev libncurses5-dev libapache2-mod-scgi php5 php5-curl php5-cli libapache2-mod-php5 screen unzip libssl-dev
 }
 
 # Function for setting up xmlrpc, libtorrent and rtorrent
 function INSTALL_RTORRENT {
-	# Installing xmlrpc-c
-	svn checkout http://svn.code.sf.net/p/xmlrpc-c/code/stable xmlrpc-c
-	cd xmlrpc-c
+	# Use the temp folder for compiling
+	cd /tmp
+
+	# Download and install xmlrpc-c
+	curl -L http://sourceforge.net/projects/xmlrpc-c/files/latest/download -o xmlrpc-c-1.33.17.tgz
+	tar zxvf xmlrpc-c-1.33.17.tgz
+	mv xmlrpc-c-1.33.17 xmlrpc
+	cd xmlrpc
 	./configure --disable-cplusplus
 	make
 	make install
+
 	cd ..
 	rm -rv xmlrpc-c
 
 	mkdir rtorrent
 	cd rtorrent
 
-	# Installing libtorrent
-	wget https://github.com/rakshasa/libtorrent/archive/0.13.4.tar.gz -O libtorrent-0.13.4.tar.gz
+	# Download and install libtorrent
+	curl -L https://github.com/rakshasa/libtorrent/archive/0.13.4.tar.gz -o libtorrent-0.13.4.tar.gz
 	tar -zxvf libtorrent-0.13.4.tar.gz
 	cd libtorrent-0.13.4
 	./autogen.sh
 	./configure
 	make
 	make install
+
 	cd ..
 
-	# Installing rtorrent
-	wget https://github.com/rakshasa/rtorrent/archive/0.9.4.tar.gz -O rtorrent-0.9.4.tar.gz
+	# Download and install rtorrent
+	curl -L https://github.com/rakshasa/rtorrent/archive/0.9.4.tar.gz -o rtorrent-0.9.4.tar.gz
 	tar -zxvf rtorrent-0.9.4.tar.gz
 	cd rtorrent-0.9.4
 	./autogen.sh
 	./configure --with-xmlrpc-c
 	make
 	make install
+
 	cd ../..
 	rm -rv rtorrent
 
@@ -903,11 +899,11 @@ HEADER
 SET_RTORRENT_USER
 SET_WEB_USER
 
-# NOTICE: Change lib, rtorrent, rutorrent versions when update are available
+# NOTICE: Change lib, rtorrent, rutorrent versions on upgrades.
 while true; do
 	HEADER
 	echo " ${BOLD}rTorrent version:${NORMAL} ${RED}0.9.4${NORMAL}"
-	echo " ${BOLD}libTorrent version:${NORMAL} ${RED}0.13.4${NORMAL}"
+	echo " ${BOLD}libTorrent version:${NORMAL} ${RED}0.13.17${NORMAL}"
 	echo " ${BOLD}ruTorrent version:${NORMAL} ${RED}3.6${NORMAL}"
 	echo
 	echo " ${BOLD}rTorrent user:${NORMAL}${GREEN} $RTORRENT_USER${NORMAL}"
