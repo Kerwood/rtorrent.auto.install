@@ -903,7 +903,7 @@ SET_WEB_USER
 while true; do
 	HEADER
 	echo " ${BOLD}rTorrent version:${NORMAL} ${RED}0.9.4${NORMAL}"
-	echo " ${BOLD}libTorrent version:${NORMAL} ${RED}0.13.17${NORMAL}"
+	echo " ${BOLD}libTorrent version:${NORMAL} ${RED}0.13.4${NORMAL}"
 	echo " ${BOLD}ruTorrent version:${NORMAL} ${RED}3.6${NORMAL}"
 	echo
 	echo " ${BOLD}rTorrent user:${NORMAL}${GREEN} $RTORRENT_USER${NORMAL}"
