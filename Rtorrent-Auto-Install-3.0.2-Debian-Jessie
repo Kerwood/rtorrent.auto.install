@@ -580,7 +580,7 @@ function SELECT_PLUGINS {
 				name="Screenshot v3.6"
 				url="http://dl.bintray.com/novik65/generic/plugins/screenshots-3.6.tar.gz"
 				file="screenshots-3.6.tar.gz"
-				desc="This plugin is intended to show screenshots from video files. Needs the package 'ffmpeg' to work."
+				desc="Package 'ffmpeg' is needed.\nThis plugin is intended to show screenshots from video files."
 				unpack="tar -zxvf $file -C $TEMP_PLUGIN_DIR"
 				if DOWNLOAD_PLUGIN; then
 					INSTALL_FFMPEG
