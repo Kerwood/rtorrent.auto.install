@@ -336,7 +336,7 @@ function SELECT_PLUGINS {
 				name="GeoIP v3.6"
 				url="http://dl.bintray.com/novik65/generic/plugins/geoip-3.6.tar.gz"
 				file="geoip-3.6.tar.gz"
-				desc="http://code.google.com/p/rutorrent/wiki/PluginGeoIP"
+				desc="Packages 'GeoLiteCity' and 'php5-geoip' is needed. http://code.google.com/p/rutorrent/wiki/PluginGeoIP"
 				unpack="tar -zxvf $file -C $TEMP_PLUGIN_DIR"
 				if DOWNLOAD_PLUGIN; then
 					wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
@@ -344,7 +344,7 @@ function SELECT_PLUGINS {
 					gunzip GeoLiteCity.dat.gz
 					mv -v GeoLiteCity.dat /usr/share/GeoIP/GeoIPCity.dat
 					rm GeoLiteCity.dat.gz
-					apt-get install php5-geoip
+					apt-get -y install php5-geoip
 				fi
 				;;
 			14)
@@ -391,9 +391,9 @@ function SELECT_PLUGINS {
 				name="Unpack v3.6"
 				url="http://dl.bintray.com/novik65/generic/plugins/unpack-3.6.tar.gz"
 				file="unpack-3.6.tar.gz"
-				desc="This plugin is designed to manually or automatically unrar/unzip torrent data.\nhttp://code.google.com/p/rutorrent/wiki/PluginUnpack"
+				desc="Package 'unrar-free' is needed.\nThis plugin is designed to manually or automatically unrar/unzip torrent data.\nhttp://code.google.com/p/rutorrent/wiki/PluginUnpack"
 				unpack="tar -zxvf $file -C $TEMP_PLUGIN_DIR"
-				DOWNLOAD_PLUGIN
+				if DOWNLOAD_PLUGIN; then apt-get -y install unrar-free; fi
 				;;
 			20)
 				name="Get Dir v3.6"
@@ -583,7 +583,6 @@ function SELECT_PLUGINS {
 				desc="This plugin is intended to show screenshots from video files. Needs the package 'ffmpeg' to work."
 				unpack="tar -zxvf $file -C $TEMP_PLUGIN_DIR"
 				if DOWNLOAD_PLUGIN; then
-					apt-get -y install ffmpeg
 					wget http://dl.bintray.com/novik65/generic/plugins/_task-3.6.tar.gz
 					tar -zxvf _task-3.6.tar.gz -C $TEMP_PLUGIN_DIR
 					rm _task-3.6.tar.gz
@@ -629,7 +628,7 @@ function SELECT_PLUGINS {
 				unpack="tar -zxvf $file -C /tmp/"
 				if DOWNLOAD_PLUGIN; then
 					mv /tmp/plugins/* $TEMP_PLUGIN_DIR
-					apt-get -y install php5-geoip ffmpeg curl libzen0 libmediainfo0 mediainfo
+					apt-get -y install php5-geoip ffmpeg libzen0 libmediainfo0 mediainfo unrar-free
 				fi
 				;;
 			0)
