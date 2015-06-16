@@ -813,7 +813,7 @@ function SETUP_INIT {
 
 # Function for showing the end result when install is complete
 function INSTALL_COMPLETE {
-	if [ -d $TEMP_PLUGIN_DIR ]; then rm -r $TEMP_PLUGIN_DIR; fi
+	if [ -d $TEMP_PLUGIN_DIR ]; then rm -rf $TEMP_PLUGIN_DIR; fi
 
 	HEADER
 
@@ -855,7 +855,7 @@ function INSTALL_COMPLETE {
 CHECK_ROOT
 LICENSE
 APACHE-UTILS
-rm -rf $TEMP_PLUGIN_DIR
+if [ -d $TEMP_PLUGIN_DIR ]; then rm -rf $TEMP_PLUGIN_DIR; fi
 HEADER
 SET_RTORRENT_USER
 SET_WEB_USER
