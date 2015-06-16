@@ -797,7 +797,7 @@ function CONFIGURE_APACHE {
 
 	service apache2 restart
 
-	# Creating .htaccess file
+	# Creating .htpasswd file
 	printf "%s\n" "${WEB_USER_ARRAY[@]}" > /var/www/rutorrent/.htpasswd
 }
 
