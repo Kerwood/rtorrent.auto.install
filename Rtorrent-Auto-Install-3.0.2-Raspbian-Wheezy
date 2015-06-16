@@ -13,7 +13,7 @@ PURPLE=$(tput setaf 5)
 # The system user rtorrent is going to run as
 RTORRENT_USER=""
 
-# The user that is going to log into rutorrent (htaccess)
+# The user that is going to log into rutorrent (htpasswd)
 WEB_USER=""
 
 # Array with webusers including their hashed paswords
