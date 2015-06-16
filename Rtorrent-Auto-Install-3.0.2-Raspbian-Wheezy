@@ -737,7 +737,7 @@ function INSTALL_RUTORRENT {
 	wget http://dl.bintray.com/novik65/generic/rutorrent-3.6.tar.gz
 	tar -zxvf rutorrent-3.6.tar.gz
 
-	if [ -d /var/www/rutorrent ]; then rm -r /var/www/rutorrent; fi
+	if [ -d /var/www/rutorrent ]; then rm -rf /var/www/rutorrent; fi
 
 	# Changeing SCGI mount point in rutorrent config
 	sed -i "s/\/RPC2/\/rutorrent\/RPC2/g" ./rutorrent/conf/config.php
