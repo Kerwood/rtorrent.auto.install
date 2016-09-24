@@ -687,7 +687,7 @@ function SELECT_PLUGINS {
 				if DOWNLOAD_PLUGIN ; then
 					mv /tmp/plugins/* $TEMP_PLUGIN_DIR
 					INSTALL_FFMPEG
-					apt-get -y install php5-geoip curl libzen0 libmediainfo0 mediainfo unrar-free
+					apt-get -y install php-geoip curl libzen0 libmediainfo0 mediainfo unrar-free
 				fi
 				;;
 
@@ -709,7 +709,7 @@ function APT_DEPENDENCIES {
 	apt-get update
 	apt-get -y install openssl git apache2 apache2-utils build-essential libsigc++-2.0-dev \
 	libcurl4-openssl-dev automake libtool libcppunit-dev libncurses5-dev libapache2-mod-scgi \
-	php5 php5-curl php5-cli libapache2-mod-php5 tmux unzip libssl-dev curl
+	php php-curl php-cli libapache2-mod-php tmux unzip libssl-dev curl
 }
 
 # Function for setting up xmlrpc, libtorrent and rtorrent
